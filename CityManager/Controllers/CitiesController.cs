@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CityManager.Data;
 using CityManager.Dtos;
+using CityManager.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityManager.Controllers
@@ -26,5 +27,16 @@ namespace CityManager.Controllers
             var citiesToReturn = _mapper.Map<List<CityForListDto>>(cities);
             return Ok(citiesToReturn);
         }
+
+        [HttpPost]
+        [Route("add")]
+        public IActionResult Add([FromBody]City city)
+        {
+            _appRepository.Add(city);
+            _appRepository.SaveAll();
+            return Ok(city);
+        }
+
+
     }
 }
