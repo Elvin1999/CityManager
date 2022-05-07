@@ -1,42 +1,57 @@
 ﻿using CityManager.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityManager.Data
 {
     public class AppRepository : IAppRepository
     {
-        public void Add<T>(T entity)
+        DataContext context;
+
+        public AppRepository(DataContext context)
         {
-            throw new NotImplementedException();
+            this.context = context;
         }
 
-        public void Delete<T>(T entity)
+        public void Add<T>(T entity) where T : class
         {
-            throw new NotImplementedException();
+            context.Add(entity);
+        }
+
+        public void Delete<T>(T entity) where T : class
+        {
+            context.Remove(entity);  
         }
 
         public List<City> GetCities()
         {
-            throw new NotImplementedException();
+            var cities=context.Cities.Include(c=>c.Photos).ToList();
+            return cities;
         }
 
         public City GetCityById(int id)
         {
-            throw new NotImplementedException();
+            var city=context
+                .Cities
+                .Include(c=>c.Photos)
+                .FirstOrDefault(c=>c.Id==id);
+            return city;
         }
 
         public Photo GetPhotoById(int id)
         {
-            throw new NotImplementedException();
+            var photo=context.Photos.FirstOrDefault(c=>c.Id==id);
+            return photo;
         }
 
-        public List<Photo> GetPhotosByCity(int id)
+        public List<Photo> GetPhotosByCity(int cityId)
         {
-            throw new NotImplementedException();
+            var photos=context.Photos.Where(p=>p.CityId== cityId).ToList();  
+            return photos;
         }
 
         public bool SaveAll()
         {
-            throw new NotImplementedException();
+            return context.SaveChanges() > 0;
         }
     }
 }

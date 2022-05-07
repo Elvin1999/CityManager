@@ -4,12 +4,12 @@ namespace CityManager.Data
 {
     public interface IAppRepository
     {
-        void Add<T>(T entity);
-        void Delete<T>(T entity);
+        void Add<T>(T entity) where T:class;
+        void Delete<T>(T entity) where T : class;
         bool SaveAll();
 
         List<City> GetCities();
-        List<Photo> GetPhotosByCity(int id);
+        List<Photo> GetPhotosByCity(int cityId);
         City GetCityById(int id);
         Photo GetPhotoById(int id);
     }
