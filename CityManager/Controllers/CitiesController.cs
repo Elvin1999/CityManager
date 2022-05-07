@@ -38,5 +38,23 @@ namespace CityManager.Controllers
         }
 
 
+        [HttpGet]
+        [Route("detail")]
+        public IActionResult GetCitiesById(int id)
+        {
+            var city = _appRepository.GetCityById(id);
+            var cityToReturn= _mapper.Map<CityForDetailDto>(city);
+            return Ok(cityToReturn);
+        }
+
+
+        [HttpGet]
+        [Route("Photos")]
+        public IActionResult GetPhotosByCityId(int cityId)
+        {
+            var photos = _appRepository.GetPhotosByCity(cityId);
+            return Ok(photos);
+        }
+
     }
 }
